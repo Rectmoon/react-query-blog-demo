@@ -21,12 +21,13 @@ export default async (req, res) => {
   }
 }
 
-async function GET(req, res) {
+async function GET (req, res) {
   const {
-    query: { postId },
+    query: { postId }
   } = req
 
-  const row = (await db.get()).posts.find((d) => d.id == postId)
+  await sleep(2000)
+  const row = (await db.get()).posts.find(d => d.id == postId)
 
   if (!row) {
     res.status(404)
@@ -36,10 +37,10 @@ async function GET(req, res) {
   res.json(row)
 }
 
-async function PATCH(req, res) {
+async function PATCH (req, res) {
   const {
     query: { postId },
-    body,
+    body
   } = req
 
   if (body.body.includes('fail')) {
@@ -48,7 +49,7 @@ async function PATCH(req, res) {
     return
   }
 
-  const row = (await db.get()).posts.find((d) => d.id == postId)
+  const row = (await db.get()).posts.find(d => d.id == postId)
 
   if (!row) {
     res.status(404)
@@ -59,22 +60,22 @@ async function PATCH(req, res) {
 
   const newRow = {
     ...row,
-    ...body,
+    ...body
   }
 
-  await db.set((old) => {
+  await db.set(old => {
     return {
       ...old,
-      posts: old.posts.map((d) => (d.id == postId ? newRow : d)),
+      posts: old.posts.map(d => (d.id == postId ? newRow : d))
     }
   })
 
   res.json(newRow)
 }
 
-async function DELETE(req, res) {
+async function DELETE (req, res) {
   const {
-    query: { postId },
+    query: { postId }
   } = req
 
   if (Math.random() < deleteFailureRate) {
@@ -83,17 +84,17 @@ async function DELETE(req, res) {
     return
   }
 
-  const row = (await db.get()).posts.find((d) => d.id == postId)
+  const row = (await db.get()).posts.find(d => d.id == postId)
 
   if (!row) {
     res.status(404)
     return res.send('Not found')
   }
 
-  await db.set((old) => {
+  await db.set(old => {
     return {
       ...old,
-      posts: old.posts.filter((d) => d.id != postId),
+      posts: old.posts.filter(d => d.id != postId)
     }
   })
 

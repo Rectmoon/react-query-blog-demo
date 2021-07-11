@@ -14,16 +14,22 @@ import AdminPost from './screens/admin/Post'
 import Blog from './screens/blog'
 import BlogPost from './screens/blog/Post'
 
-export const queryCache = new QueryCache()
+export const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+})
 
-function restoreCache() {
+function restoreCache () {
   if (typeof localStorage !== 'undefined') {
     let cache = localStorage.getItem('queryCache_1')
     if (cache) {
       hydrate(queryCache, JSON.parse(cache))
     }
 
-    queryCache.subscribe((cache) => {
+    queryCache.subscribe(cache => {
       localStorage.setItem('queryCache_1', JSON.stringify(dehydrate(cache)))
     })
   }
@@ -31,7 +37,7 @@ function restoreCache() {
 
 restoreCache()
 
-function SafeHydrate({ children }) {
+function SafeHydrate ({ children }) {
   return (
     <div suppressHydrationWarning>
       {typeof document === 'undefined' ? null : children}
@@ -39,7 +45,7 @@ function SafeHydrate({ children }) {
   )
 }
 
-export default function App() {
+export default function App () {
   return (
     <SafeHydrate>
       <ReactQueryCacheProvider queryCache={queryCache}>
@@ -49,17 +55,17 @@ export default function App() {
             <Main>
               <Routes>
                 <Route
-                  path="/"
+                  path='/'
                   element={
                     <>
                       <h1>Welcome!</h1>
                     </>
                   }
                 />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/admin/:postId" element={<AdminPost />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:postId" element={<BlogPost />} />
+                <Route path='/admin' element={<Admin />} />
+                <Route path='/admin/:postId' element={<AdminPost />} />
+                <Route path='/blog' element={<Blog />} />
+                <Route path='/blog/:postId' element={<BlogPost />} />
               </Routes>
             </Main>
           </Wrapper>

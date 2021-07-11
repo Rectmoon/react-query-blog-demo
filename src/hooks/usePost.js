@@ -4,18 +4,21 @@ import { useQuery } from 'react-query'
 import { queryCache } from '../'
 
 export const fetchPost = (_, postId) =>
-  axios.get(`/api/posts/${postId}`).then((res) => res.data)
+  axios.get(`/api/posts/${postId}`).then(res => res.data)
 
-export const prefetchPost = (postId) => {
+export const prefetchPost = postId => {
   queryCache.prefetchQuery(['posts', String(postId)], fetchPost, {
-    staleTime: 5000,
+    staleTime: 5000
   })
 }
 
-export default function usePost(postId) {
+export default function usePost (postId) {
   return useQuery(['posts', postId], fetchPost, {
     placeholderData: () =>
-      queryCache.getQueryData('posts')?.find((d) => d.id == postId),
-    staleTime: 2000,
+      // queryCache.getQueryData('posts')?.find(d => d.id == postId),
+      {
+        return { id: postId, title: 'hhh', body: 'how are you?' }
+      }
+    // staleTime: 2000
   })
 }

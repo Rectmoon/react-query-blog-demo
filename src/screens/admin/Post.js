@@ -10,7 +10,7 @@ import useDeletePost from '../../hooks/useDeletePost'
 import PostForm from '../../components/PostForm'
 import { Loader } from '../../components/styled'
 
-export default function Post() {
+export default function Post () {
   const { postId } = useParams()
   const navigate = useNavigate()
 
@@ -18,7 +18,7 @@ export default function Post() {
   const [savePost, savePostInfo] = useSavePost()
   const [deletePost, deletePostInfo] = useDeletePost()
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     savePost(values)
   }
 
