@@ -1,17 +1,21 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
 
-//
+import PostTitle from './PostTitle'
+import PostBody from './PostBody'
 
-import usePost from '../../hooks/usePost'
+// import { useParams } from 'react-router-dom'
+// import usePost from '../../hooks/usePost'
 
 export default function Post() {
-  const { postId } = useParams()
-  const postQuery = usePost(postId)
+  // const { postId } = useParams()
+  // const postQuery = usePost(postId)
 
   return (
     <>
-      {postQuery.isLoading ? (
+      <PostTitle />
+      <PostBody />
+
+      {/* {postQuery.isLoading ? (
         <span>Loading...</span>
       ) : postQuery.isError ? (
         postQuery.error.message
@@ -20,7 +24,7 @@ export default function Post() {
           <h2>{postQuery.data.title}</h2>
           <p>{postQuery.data.body}</p>
         </div>
-      )}
+      )} */}
     </>
   )
 }
